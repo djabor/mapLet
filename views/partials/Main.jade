@@ -1,0 +1,53 @@
+script
+	if (typeof Number.prototype.toDeg == 'undefined') {
+		Number.prototype.toDeg = function() {
+			return this * 180 / Math.PI;
+		}
+	}
+	if (typeof Number.prototype.toRad == 'undefined') {
+		Number.prototype.toRad = function() {
+			return this * Math.PI / 180;
+		}
+	}
+
+h1 calculate route
+
+.step_1
+	h2 get directions
+	h6
+		input(type="text", name="origin", ng-model="origin", placeholder="origin", value="{{origin}}")
+		input(type="text", name="destination", ng-model="destination", placeholder="destination", value="{{destination}}" )
+	h6 
+		button(ng-click="calcRoute()") calculate
+
+	#routeResults {{route.Polys | json}}
+
+.step_2(ng-show="flags.polys")
+	h2 retrieve panorama ids
+	h6
+		button(ng-click="getPolyPanos()") retrieve panos
+
+	table
+		tr
+			th pano id
+			th heading in &deg;
+			th links #
+		tr(ng-repeat="pano in route.Panos")
+			td {{pano.id}}
+			td {{pano.yaw}}
+			td {{pano.links.length}}
+
+.step_3(ng-show="flags.panos")
+	h2 trace route
+	h6
+		button(ng-click="traceRoute()") trace routes
+
+	table
+		tr
+			th pano id
+			th heading in &deg;
+			th description
+		tr(ng-repeat="pano in route.traced")
+			td {{pano.panoId}}
+			td {{pano.yawDeg}}
+			td {{pano.description}}
